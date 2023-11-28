@@ -63,7 +63,6 @@
             <div class="input d-flex mt-3 mb-2" style="border: 1px solid #ccc; border-radius: 10px;">
                 <button type="submit" class="btn btn-success w-100">Login</button>
             </div>
-            <a class="pt-2" href="/sign-up">Create Account?</a>
         </div>
     </form>
 </div>

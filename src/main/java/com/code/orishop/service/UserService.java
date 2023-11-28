@@ -40,6 +40,9 @@ public class UserService {
         UserEntity user = userRepository.findByUserName(userReq.getUserName());
         if(user != null) throw new Exception("User already exists!");
 
+        Optional<UserEntity> user2 = userRepository.findByEmail(userReq.getEmail());
+        if(user2.isPresent()) throw new Exception("User already exists!");
+
         RoleEntity role = roleRepository.findById(userReq.getRole())
                 .orElse(null);
 
@@ -57,6 +60,10 @@ public class UserService {
     public void updateUser(UserReq userReq, Long id) throws Exception {
         UserEntity user = userRepository.findByUserName(userReq.getUserName());
         if(user != null && !Objects.equals(user.getId(), id)) throw new Exception("User already exists!");
+
+        Optional<UserEntity> user2 = userRepository.findByEmail(userReq.getEmail());
+        if(user2.isPresent() && !Objects.equals(user2.get().getId(), id)) throw new Exception("User already exists!");
+
         RoleEntity role = roleRepository.findById(userReq.getRole())
                 .orElse(null);
         UserEntity userEntity = getById(id);
