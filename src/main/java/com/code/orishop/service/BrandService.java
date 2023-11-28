@@ -31,7 +31,7 @@ public class BrandService {
         return brandRepository.findById(id)
                 .orElseThrow(()->{
                     try {
-                        throw new Exception("Not found category!");
+                        throw new Exception("Not found brand!");
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -41,7 +41,7 @@ public class BrandService {
     public BrandEntity createBrand(String name) throws Exception {
         BrandEntity entity = brandRepository.findByName(name);
         if(entity != null){
-            throw new Exception("Category already exists");
+            throw new Exception("Brand already exists");
         }
         BrandEntity  brand = new BrandEntity();
         brand.setName(name);
@@ -49,12 +49,30 @@ public class BrandService {
         return brand;
     }
 
+    public void remove(Long id ) throws Exception {
+        BrandEntity entity = getById(id);
+        if(entity.getId() == 1){
+            throw new Exception("Can't remove default");
+        }
+        for(int i = 0; i < entity.getProductList().size(); i++) {
+            ProductEntity productEntity = entity.getProductList().get(i);
+            productEntity.setBrand(getById(1L));
+            productRepository.save(productEntity);
+        }
+        entity.getProductList().clear();
+        brandRepository.save(entity);
+        brandRepository.delete(entity);
+    }
+
     public BrandEntity update(BrandReq brandReq) throws Exception {
         BrandEntity entity = getById(brandReq.getId());
 
         BrandEntity entity2 = brandRepository.findByName(brandReq.getName());
         if(entity2 != null && !Objects.equals(entity2.getId(), brandReq.getId())){
-            throw new Exception("Category already exists");
+            throw new Exception("Brand already exists");
+        }
+        if(entity.getId() == 1){
+            throw new Exception("Can't edit default");
         }
         entity.setName(brandReq.getName());
         for(int i = 0; i < entity.getProductList().size(); i++) {

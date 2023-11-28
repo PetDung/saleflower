@@ -1,5 +1,6 @@
 package com.code.orishop.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,7 +34,7 @@ public class UserEntity extends BaseEntity{
     private List<RoleEntity> roles;
 
     @OneToMany(mappedBy = "customer")
-    @JsonManagedReference
+    @JsonBackReference
     private List<OrderEntity> orders;
 
 }

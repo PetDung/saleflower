@@ -5,7 +5,7 @@
         <h1 class="h2">Product Details</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
                 <button onclick="update()" type="button" class="btn btn-sm btn-outline-primary">
-                    <i class="fa-solid fa-circle-plus"></i>
+                    <i class="fa-solid fa-check"></i>
                     Save
                 </button>
         </div>

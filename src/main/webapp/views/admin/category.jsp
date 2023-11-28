@@ -20,6 +20,7 @@
                     <th scope="col">Create At</th>
                     <th scope="col">Update At</th>
                     <th scope="col">Detail</th>
+                    <th scope="col">Remove</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,15 @@
                                 </button>
                             </a>
                         </td>
+                        <td>
+                            <a href="/admin/category/remove?id=${c.id}">
+                                <button type="button" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </a>
+
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -51,7 +61,7 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="name" class="form-label fw-bold pb-2">Category Name:</label>
-                                <input required type="text" class="form-control input" id="name" placeholder="Product name">
+                                <input required type="text" class="form-control input" id="name" placeholder="Category name">
                             </div>
                         </div>
                         <div class="modal-footer">

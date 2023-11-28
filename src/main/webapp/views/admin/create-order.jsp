@@ -24,6 +24,15 @@
     th {
         background-color: #f2f2f2;
     }
+    .item-rs{
+        color: white;
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 12px;
+    }
+    .item-rs:hover{
+        background-color:black;
+    }
 </style>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -40,70 +49,30 @@
             <div class="col-12 col-md-6">
                 <div class="mb-3">
                     <label for="name" class="form-label fw-bold pb-2">Customer Name:</label>
-                    <input hidden type="text" id="id" value="${o.id}">
-                    <input value="${o.customerName}" required type="text" class="form-control input" id="name" placeholder="Category name">
+                    <input  required type="text" class="form-control input" id="name" placeholder="Customer name">
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label fw-bold pb-2">Address:</label>
-                    <input value="${o.address}" required type="text" class="form-control input" id="address" placeholder="Category name">
+                    <input  required type="text" class="form-control input" id="address" placeholder="Address">
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label fw-bold pb-2">Phone:</label>
-                    <input value="${o.phone}" required type="text" class="form-control input" id="phone" placeholder="Category name">
+                    <input  required type="text" class="form-control input" id="phone" placeholder="Phone">
                 </div>
-                <div class="mb-3">
-                    <label  class="form-label fw-bold pb-2">Order By:</label>
-                    <span id="customer" data-id="${o.customer.id}" class="fw-bold">${o.customer.userName}</span>
+                <div style="position: relative" class="mb-3">
+                    <label for="customer"  class="form-label fw-bold pb-2">Order By:</label>
+                    <input data-id="0" oninput="searchCustomer(this)" required type="text" class="form-control input" id="customer" placeholder="Search">
+                    <div style="position: absolute; left: 0; right: 0; max-height: 200px;
+                                background-color: #a19d9d; top: 100%; margin-top: 2px;
+                                border-radius: 12px ; display: none"
+                         class="rs-search pt-2 pb-2">
+
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label  class="form-label fw-bold pb-2">Total:</label>
-                    <span id="total" style="font-size: 20px" class="fw-bold price">${o.totalAmount}</span>
+                    <span id="total" style="font-size: 20px" class="fw-bold price">0</span>
                 </div>
-                <h4 class="pt-2">Product Now</h4>
-                <table class="table" style="max-height: 550px; overflow-y: auto;display: block">
-                    <thead>
-                    <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Check</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="od" items="${o.orderDetails}">
-                        <tr>
-                            <td>
-                               <c:set var="productImagePath" value="/api/v1/image/file/product/${od.product.image.id}" />
-                                <img style="width: 60px; object-fit: scale-down"
-                                     src="${od.product.image !=null ? productImagePath : '/img/nothing.png'}"
-                                     alt=""
-                                >
-                            <td>
-                                    ${od.product.name} - <span class="price"> ${od.product.price}</span>
-                                    <input class="pd-id" type="text" value="${od.product.id}" hidden>
-                                        <br>
-                                    <span class="d-block pt-3">
-                                        <input style=" width: 80px;padding:4px; font-size: 16px"
-                                               class="input-qtn"
-                                               data-price ="${od.product.price}"
-                                               oninput="handlerInput(this)"
-                                               onchange="handlerInput(this)"
-                                               type="number"
-                                               value="${od.quantity}"
-                                               min = "1"
-                                               step= "1"
-                                               max = "${od.product.quantityInStock}"
-                                               required
-                                        >
-                                        Total: <span class="price total">${od.quantity * od.product.price}</span>
-                                    </span>
-                            </td>
-                            <td>
-                                <input oninput="loadTotal()" class="checkName" data-id="${od.product.id}" checked ="true" style="width: 20px; height: 20px;" type="checkbox">
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
             </div>
            <div class="col-12 col-md-6">
                <h4 class="pt-2">Add Product</h4>
@@ -116,7 +85,7 @@
                    </tr>
                    </thead>
                    <tbody>
-                   <c:forEach var="p" items="${productList}">
+                   <c:forEach var="p" items="${productLists}">
                        <tr>
                            <td>
                                <img style="width: 60px; object-fit: scale-down"
@@ -126,7 +95,7 @@
                            </td>
                            <td>
                                    ${p.name} - <span class="price"> ${p.price}</span>
-                               <input class="pd-id" type="text" value="${p.id}" hidden>
+                                       <input class="pd-id" type="text" value="${p.id}" hidden>
                                <br>
                                <span class="d-block pt-3">
                                         <input style=" width: 80px;padding:4px; font-size: 16px"
@@ -192,20 +161,53 @@
                 total.innerText = formatCurrency(sum);
             })
         }
+        let customer = document.getElementById("customer");
+        let searchCustomer = (e)=>{
+            let result = document.querySelector(".rs-search");
+            let userName = e.value;
+            if(!userName){
+                result.style.display ="none";
+                return false;
+            }
+            let url =`/admin/users/search?userName=` + userName;
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function(response) {
+                    if (response.length <= 0) {
+                        return false;
+                    }
+                    result.style.display ="block";
+                    let html = "";
+                    response.forEach(item=>{
+                        html += `<div onclick="handlerClick(this)" class="item-rs"> <span class="username">`+ item.userName + `</span> <br/> <span class="phone">` + item.phone + `</span> <br/> <span hidden class="id">` +  item.id  + `</span> </div>`
+                    })
+                    result.innerHTML =html;
+                },
+                error: function(error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+        let handlerClick = (e)=>{
+            let userName = e.querySelector(".username").innerText;
+            let id = e.querySelector(".id").innerText;
+            customer.value = userName;
+            customer.setAttribute("data-id", id);
+            e.parentElement.style.display="none";
+        }
+
         let submit= ()=>{
-            let id = document.getElementById("id").value;
             let data = getForm();
             if(!data) return;
-            console.log(data)
             $.ajax({
                 type: "POST",
-                url: "/api/v1/admin/order/update?id=" + id  ,  // Thay "/search" bằng địa chỉ API của bạn
+                url: "/api/v1/admin/order/create",  // Thay "/search" bằng địa chỉ API của bạn
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function(response) {
                     console.log(response);
                     alert("success");
-                    location.reload();
                 },
                 error: function(error) {
                     // Xử lý lỗi ở đây

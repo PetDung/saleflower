@@ -1,6 +1,7 @@
 package com.code.orishop.service;
 
 import com.code.orishop.controller.admin.Product;
+import com.code.orishop.model.Chart.ProductHot;
 import com.code.orishop.model.entity.ImageEntity;
 import com.code.orishop.model.entity.ProductEntity;
 import com.code.orishop.model.request.ProductReq;
@@ -36,7 +37,17 @@ public class ProductService {
         List<ProductEntity> productEntities = productRepository.findAll();
         List<ProductRes> productResList = new ArrayList<>();
         productEntities.forEach(productEntity -> {
-            productResList.add(new ProductRes(productEntity));
+            if(productEntity.getStatus())
+                productResList.add(new ProductRes(productEntity));
+        });
+        return productResList;
+    }
+    public List<ProductRes> getAllHidden(){
+        List<ProductEntity> productEntities = productRepository.findAll();
+        List<ProductRes> productResList = new ArrayList<>();
+        productEntities.forEach(productEntity -> {
+            if(!productEntity.getStatus())
+                productResList.add(new ProductRes(productEntity));
         });
         return productResList;
     }
@@ -105,5 +116,35 @@ public class ProductService {
     }
     public List<ProductEntity> getProductsNotBrand(Long brandId){
         return productRepository.findAllProductsNotBrand(brandId);
+    }
+
+    public void changeStatus(Long id){
+        ProductEntity product =getProductById(id);
+        product.setStatus(!product.getStatus());
+        productRepository.save(product);
+    }
+
+    public List<ProductRes> getAllNotOrder(Long orderId){
+        List<ProductEntity> productEntities = productRepository.findAllProductNotInOrder(orderId);
+        List<ProductRes> productResList = new ArrayList<>();
+        productEntities.forEach(productEntity -> {
+            if(productEntity.getStatus())
+                productResList.add(new ProductRes(productEntity));
+        });
+        return productResList;
+    }
+
+    public List<ProductHot> top5(){
+        return productRepository.findTop5SellingProducts();
+    }
+
+    public List<ProductRes> search(String name){
+        List<ProductEntity> productEntities = productRepository.searchAllByName(name);
+        List<ProductRes> productResList = new ArrayList<>();
+        productEntities.forEach(productEntity -> {
+            productResList.add(new ProductRes(productEntity));
+
+        });
+        return productResList;
     }
 }

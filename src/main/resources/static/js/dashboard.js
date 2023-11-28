@@ -1,34 +1,44 @@
 /* globals Chart:false, feather:false */
 
 (function () {
-    'use strict'
 
     feather.replace({ 'aria-hidden': 'true' })
 
     // Graphs
-    var ctx = document.getElementById('myChart')
+    let ctx = document.getElementById('myChart')
     // eslint-disable-next-line no-unused-vars
-    var myChart = new Chart(ctx, {
+    let myChart = new Chart(ctx, {
+
         type: 'line',
         data: {
             labels: [
-                'Sunday',
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday'
+                'sunday',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8',
+                '9',
+                '10',
+                '11',
+                '12',
             ],
             datasets: [{
                 data: [
-                    15339,
-                    21345,
-                    18483,
-                    24003,
-                    23489,
-                    24092,
-                    12034
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12
                 ],
                 lineTension: 0,
                 backgroundColor: 'transparent',

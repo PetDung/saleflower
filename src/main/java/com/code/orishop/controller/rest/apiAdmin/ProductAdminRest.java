@@ -33,4 +33,13 @@ public class ProductAdminRest {
             return ResponseEntity.badRequest().body(e);
         }
     }
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam(value = "name") String name){
+        try {
+            return ResponseEntity.ok(productService.search(name));
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e);
+        }
+    }
 }

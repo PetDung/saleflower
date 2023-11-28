@@ -45,6 +45,9 @@ public class CategoryService {
         if(entity2 != null && !Objects.equals(entity2.getId(), categoryReq.getId())){
             throw new Exception("Category already exists");
         }
+        if(entity.getId() == 1){
+            throw new Exception("Can't edit default");
+        }
         entity.setName(categoryReq.getName());
         for(int i = 0; i < entity.getProductList().size(); i++) {
             ProductEntity productEntity = entity.getProductList().get(i);
@@ -64,6 +67,20 @@ public class CategoryService {
         });
         categoryRepository.save(entity);
         return entity;
+    }
+    public void remove(Long id) throws Exception {
+        CategoryEntity entity = getById(id);
+        if(entity.getId() == 1){
+            throw new Exception("Can't remove default");
+        }
+        for(int i = 0; i < entity.getProductList().size(); i++) {
+            ProductEntity productEntity = entity.getProductList().get(i);
+            productEntity.setCategory(getById(1L));
+            productRepository.save(productEntity);
+        }
+        entity.getProductList().clear();
+        categoryRepository.save(entity);
+        categoryRepository.delete(entity);
     }
 
     public CategoryEntity createCategory(String name) throws Exception {

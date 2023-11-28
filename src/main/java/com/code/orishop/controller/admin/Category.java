@@ -39,4 +39,13 @@ public class Category {
         }
         return "/admin/index";
     }
+    @GetMapping("/remove")
+    public String remove(@RequestParam(value = "id",defaultValue = "0") Long id){
+        try {
+            categoryService.remove(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:/admin/category";
+    }
 }

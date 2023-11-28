@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -66,5 +67,20 @@ public class UserService {
         userEntity.getRoles().clear();
         userEntity.getRoles().add(role);
         userRepository.save(userEntity);
+    }
+    public String getRole(String userName) {
+        UserEntity user = userRepository.findByUserName(userName);
+        if(user !=null) return user.getRoles().get(0).getRoleName();
+        return null;
+    }
+    public UserEntity login(String email, String password) {
+        Optional<UserEntity> user = userRepository.findByEmail(email);
+        if(user.isEmpty() || !user.get().getPassword().equals(password)) {
+            return null;
+        }
+        return user.get();
+    }
+    public List<UserEntity> searchCustomer (String userName ){
+        return userRepository.findAllCustomersByUserName(userName);
     }
 }

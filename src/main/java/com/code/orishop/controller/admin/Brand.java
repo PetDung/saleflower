@@ -37,4 +37,14 @@ public class Brand {
         }
         return "/admin/index";
     }
+
+    @GetMapping("/remove")
+    public String remove(@RequestParam(value = "id",defaultValue = "0") Long id){
+        try {
+            brandService.remove(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:/admin/brand";
+    }
 }

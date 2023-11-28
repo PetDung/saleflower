@@ -4,40 +4,46 @@
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="/admin">
-                    <span data-feather="home"></span>
+                    <i class="fa-solid fa-chart-line"></i>
                     Dashboard
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/order">
-                    <span data-feather="file"></span>
+                    <i class="fa-solid fa-file-invoice"></i>
                     Orders
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/products">
-                    <span data-feather="shopping-cart"></span>
+                    <i class="fa-solid fa-sun"></i>
                     Products
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/users">
-                    <span data-feather="users"></span>
+                    <i class="fa-solid fa-user"></i>
                     User & Customer
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/brand">
-                    <span data-feather="bar-chart-2"></span>
+                    <i class="fa-solid fa-code-branch"></i>
                     Brand
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/category">
-                    <span data-feather="layers"></span>
+                    <i class="fa-solid fa-chart-bar"></i>
                     Category
                 </a>
             </li>
         </ul>
     </div>
+    <style>
+        .nav-item{
+            font-size: 17px;
+            padding: 4px 2px;
+        }
+    </style>
 </nav>

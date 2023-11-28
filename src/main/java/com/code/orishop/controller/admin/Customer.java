@@ -3,6 +3,7 @@ package com.code.orishop.controller.admin;
 import com.code.orishop.service.RoleService;
 import com.code.orishop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,5 +27,10 @@ public class Customer {
         model.addAttribute("roles", roleService.getAll());
         model.addAttribute("users",userService.getAll());
         return "/admin/index";
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam("userName") String userName){
+        return ResponseEntity.ok(userService.searchCustomer(userName));
     }
 }
