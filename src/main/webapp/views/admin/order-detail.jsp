@@ -52,6 +52,16 @@
                     <input value="${o.phone}" required type="text" class="form-control input" id="phone" placeholder="Category name">
                 </div>
                 <div class="mb-3">
+                    <label  class="form-label fw-bold pb-2">Status</label>
+                    <select id="status" class="form-select select" aria-label="Default select example">
+                        <option value="0" ${o.status == 0 ? 'selected' : ''}>
+                            Wait for confirmation
+                        </option>
+                        <option value="1" ${o.status == 1 ? 'selected' : ''}>Shipping</option>
+                        <option value="2" ${o.status == 2 ? 'selected' : ''}>Delivered</option>
+                    </select>
+                </div>
+                <div class="mb-3">
                     <label  class="form-label fw-bold pb-2">Order By:</label>
                     <span id="customer" data-id="${o.customer.id}" class="fw-bold">${o.customer.userName}</span>
                 </div>
@@ -136,7 +146,6 @@
                                                onchange="handlerInput(this)"
                                                type="number"
                                                value="1"
-                                               min = "1"
                                                step= "1"
                                                max = "${p.quantityInStock}"
                                                required
@@ -161,14 +170,13 @@
             let total = e.parentElement.querySelector(".total");
             let price = Number(e.getAttribute("data-price"));
             let max = Number(e.getAttribute("max"))
-            let min =  Number(e.getAttribute("min"))
             if(quantity>max) {
                 e.value=max;
                 alert("Too much quantity in stock")
                 return;
             }
-            if(quantity<min) {
-                e.value=min;
+            if(quantity < 0 ) {
+                e.value=1;
                 return;
             }
 
@@ -221,7 +229,7 @@
             let phone = document.getElementById("phone").value;
             let address = document.getElementById("address").value;
             let orderBy = document.getElementById("customer").getAttribute("data-id");
-
+            let status = document.getElementById("status").value;
             if(!customerName || !phone || !address){
                 alert("Please enter full data!");
                 return false;
@@ -238,18 +246,21 @@
                     let father = item.parentElement.parentElement;
                     let quantity = extractNumberFromString(father.querySelector(".input-qtn").value);
                     let productId = father.querySelector(".pd-id").value;
-                    orderDetalList.push(new OrderDetal(productId,quantity));
+                    if(quantity > 0) {
+                        orderDetalList.push(new OrderDetal(productId,quantity));
+                    }
                 }
             })
-            function Order (customerName,phone,address,orderBy,orderDetalList){
+            function Order (customerName,phone,address,orderBy,orderDetalList,status){
                 this.customerName = customerName;
                 this.phone = phone;
                 this.address = address;
                 this.orderBy = orderBy;
                 this.orderDetalList = orderDetalList;
+                this.status = status;
 
             }
-            return  new Order(customerName, phone, address, orderBy, orderDetalList);
+            return  new Order(customerName, phone, address, orderBy, orderDetalList,status);
 
         }
     </script>

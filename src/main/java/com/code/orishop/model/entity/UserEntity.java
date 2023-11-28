@@ -1,9 +1,12 @@
 package com.code.orishop.model.entity;
 
+import com.code.orishop.service.OrderService;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 @Entity
@@ -23,6 +26,8 @@ public class UserEntity extends BaseEntity{
 
     @Column
     private String phone;
+
+
 
     @ManyToMany
     @JoinTable(

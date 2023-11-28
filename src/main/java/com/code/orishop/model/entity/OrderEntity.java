@@ -35,4 +35,7 @@ public class OrderEntity  extends BaseEntity{
     @JsonBackReference
     private UserEntity customer;
 
+    @Column(name="status")
+    int status = 0;
+
 }

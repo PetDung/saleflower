@@ -76,6 +76,7 @@ public class ProductService {
                 .price(productReq.getPrice())
                 .quantityInStock(productReq.getQuantityInStock())
                 .brand(brandRepository.findById(productReq.getBrand()).get())
+                .status(true)
                 .category(categoryRepository.findById(productReq.getCategory()).get())
                 .build();
         if(productReq.getImage() != null){

@@ -33,4 +33,14 @@ public class Customer {
     public ResponseEntity<?> search(@RequestParam("userName") String userName){
         return ResponseEntity.ok(userService.searchCustomer(userName));
     }
+
+    @GetMapping("/remove")
+    public String remove(@RequestParam("id") Long id){
+        try{
+            userService.remove(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:/admin/users";
+    }
 }

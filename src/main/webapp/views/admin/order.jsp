@@ -24,6 +24,7 @@
                     <th scope="col">Address</th>
                     <th scope="col">Total</th>
                     <th scope="col">Create At</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Detail</th>
                     <th scope="col">Delete</th>
                 </tr>
@@ -37,6 +38,19 @@
                         <td>${o.address}</td>
                         <td class="price">${o.totalAmount}</td>
                         <td>${o.createdAt}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${o.status == 0}">
+                                    <p style="color: red">Wait for confirmation</p>
+                                </c:when>
+                                <c:when test="${o.status == 1}">
+                                    <p style="color: red">Shipping</p>
+                                </c:when>
+                                <c:when test="${o.status == 2}">
+                                    <p style="color: red">Delivered</p>
+                                </c:when>
+                            </c:choose>
+                        </td>
                         <td>
                             <a href="/admin/order/detail/${o.id}">
                                 <button type="button" class="btn btn-sm btn-outline-secondary">

@@ -17,5 +17,6 @@ public class OrderRes {
     private String phone;
     private String address;
     private Long orderBy =0L;
+    private int status;
     private List<OrderDetailRes> orderDetalList  = new ArrayList<>();
 }

@@ -77,6 +77,7 @@ public class Product {
         return "redirect:/admin/products" ;
     }
 
+
     @GetMapping("/create-product")
     public String addProduct(Model model){
         model.addAttribute("categoryList", categoryService.getAll());

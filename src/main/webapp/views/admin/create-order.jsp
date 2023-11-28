@@ -105,7 +105,6 @@
                                                onchange="handlerInput(this)"
                                                type="number"
                                                value="1"
-                                               min = "1"
                                                step= "1"
                                                max = "${p.quantityInStock}"
                                                required
@@ -130,14 +129,13 @@
             let total = e.parentElement.querySelector(".total");
             let price = Number(e.getAttribute("data-price"));
             let max = Number(e.getAttribute("max"))
-            let min =  Number(e.getAttribute("min"))
             if(quantity>max) {
                 e.value=max;
                 alert("Too much quantity in stock")
                 return;
             }
-            if(quantity<min) {
-                e.value=min;
+            if(quantity<0) {
+                e.value=1;
                 return;
             }
 
@@ -240,7 +238,9 @@
                     let father = item.parentElement.parentElement;
                     let quantity = extractNumberFromString(father.querySelector(".input-qtn").value);
                     let productId = father.querySelector(".pd-id").value;
-                    orderDetalList.push(new OrderDetal(productId,quantity));
+                    if(quantity > 0) {
+                        orderDetalList.push(new OrderDetal(productId,quantity));
+                    }
                 }
             })
             function Order (customerName,phone,address,orderBy,orderDetalList){

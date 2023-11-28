@@ -3,6 +3,7 @@ package com.code.orishop.service;
 import com.code.orishop.model.entity.RoleEntity;
 import com.code.orishop.model.entity.UserEntity;
 import com.code.orishop.model.request.UserReq;
+import com.code.orishop.repository.OrderRepository;
 import com.code.orishop.repository.RoleRepository;
 import com.code.orishop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
 
 
     public List<UserEntity> getAll(){
@@ -89,5 +93,19 @@ public class UserService {
     }
     public List<UserEntity> searchCustomer (String userName ){
         return userRepository.findAllCustomersByUserName(userName);
+    }
+
+    public void remove(Long id){
+        UserEntity user = getById(id);
+        if(user.getUserName().equals("default")) return;
+        user.getOrders().forEach(order ->{
+            UserEntity userEntity =userRepository.findByUserName("default");
+            order.setCustomer(userEntity);
+            orderRepository.save(order);
+            userEntity.getOrders().add(order);
+            userRepository.save(userEntity);
+        });
+        user.getOrders().clear();
+        userRepository.delete(user);
     }
 }

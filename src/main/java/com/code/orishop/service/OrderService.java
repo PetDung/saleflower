@@ -24,8 +24,6 @@ public class OrderService {
     OrderRepository orderRepository;
 
     @Autowired
-    UserService userService;
-    @Autowired
     UserRepository userRepository;
 
     @Autowired
@@ -86,6 +84,7 @@ public class OrderService {
                 .customer(user)
                 .customerName(orderRes.getCustomerName())
                 .totalAmount(total)
+                .status(0)
                 .build();
         orderRepository.save(order);
         user.getOrders().add(order);
@@ -136,6 +135,7 @@ public class OrderService {
         entity.setCustomerName(orderRes.getCustomerName());
         entity.setAddress(orderRes.getAddress());
         entity.setTotalAmount(total);
+        entity.setStatus(orderRes.getStatus());
         orderRepository.save(entity);
         for(int i = 0; i< orderDetailEntities.size(); i++){
             orderDetailEntities.get(i).setOrder(entity);
@@ -144,7 +144,13 @@ public class OrderService {
     }
     public void remove(Long id){
         OrderEntity order = getById(id);
-
+        if(order.getStatus() != 2){
+            order.getOrderDetails().forEach(od -> {
+                ProductEntity productEntity =od.getProduct();
+                productEntity.setQuantityInStock(od.getQuantity() + productEntity.getQuantityInStock());
+                productRepository.save(productEntity);
+            });
+        }
         orderDetailRepository.deleteAll(order.getOrderDetails());
         order.getOrderDetails().clear();
         orderRepository.delete(order);

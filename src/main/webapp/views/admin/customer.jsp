@@ -21,6 +21,7 @@
                     <th scope="col">Phone</th>
                     <th scope="col">Joined Date</th>
                     <th scope="col">Detail</th>
+                    <th scope="col">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,14 @@
                                     <i class="fa-solid fa-eye"></i>
                                     View Detail
                             </button>
+                        </td>
+                        <td>
+                            <a href="/admin/users/remove?id=${u.id}">
+                                <button type="button" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>
