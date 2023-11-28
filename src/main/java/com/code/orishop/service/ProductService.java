@@ -37,8 +37,10 @@ public class ProductService {
         List<ProductEntity> productEntities = productRepository.findAll();
         List<ProductRes> productResList = new ArrayList<>();
         productEntities.forEach(productEntity -> {
-            if(productEntity.getStatus())
-                productResList.add(new ProductRes(productEntity));
+            if(productEntity.getStatus()){
+                Long quantitySold = productRepository.getQuantitySold(productEntity.getId());
+                productResList.add(new ProductRes(productEntity,quantitySold));
+            }
         });
         return productResList;
     }
@@ -46,8 +48,10 @@ public class ProductService {
         List<ProductEntity> productEntities = productRepository.findAll();
         List<ProductRes> productResList = new ArrayList<>();
         productEntities.forEach(productEntity -> {
-            if(!productEntity.getStatus())
-                productResList.add(new ProductRes(productEntity));
+            if(!productEntity.getStatus()){
+                Long quantitySold = productRepository.getQuantitySold(productEntity.getId());
+                productResList.add(new ProductRes(productEntity,quantitySold));
+            }
         });
         return productResList;
     }
@@ -84,7 +88,7 @@ public class ProductService {
             product.setImage(imageEntity);
         }
         productRepository.save(product);
-        return new ProductRes(product);
+        return new ProductRes(product,0L);
     }
     public ProductRes updateProduct(ProductReq product,Long id) throws Exception {
         ProductEntity productSys2 = productRepository.findByName(product.getName());
@@ -109,7 +113,7 @@ public class ProductService {
            imageService.uploadImageByProductId(id, product.getImage());
         }
         productRepository.save(productSys);
-        return new ProductRes(productSys);
+        return new ProductRes(productSys,0L);
     }
 
     public List<ProductEntity> getProductsNotCategory(Long categoryId){
@@ -130,7 +134,7 @@ public class ProductService {
         List<ProductRes> productResList = new ArrayList<>();
         productEntities.forEach(productEntity -> {
             if(productEntity.getStatus())
-                productResList.add(new ProductRes(productEntity));
+                productResList.add(new ProductRes(productEntity,0L));
         });
         return productResList;
     }
@@ -143,7 +147,7 @@ public class ProductService {
         List<ProductEntity> productEntities = productRepository.searchAllByName(name);
         List<ProductRes> productResList = new ArrayList<>();
         productEntities.forEach(productEntity -> {
-            productResList.add(new ProductRes(productEntity));
+            productResList.add(new ProductRes(productEntity,0L));
 
         });
         return productResList;

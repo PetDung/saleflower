@@ -29,7 +29,9 @@ public class ProductRes {
     private Date updatedAt;
     private Date createdAt;
 
-    public ProductRes(ProductEntity p) {
+    private Long quantitySold;
+
+    public ProductRes(ProductEntity p,Long quantitySold) {
         this.id = p.getId();
         this.name = p.getName();
         this.price = p.getPrice();
@@ -45,5 +47,6 @@ public class ProductRes {
         }
         this.updatedAt = p.getUpdatedAt();
         this.createdAt = p.getCreatedAt();
+        this.quantitySold =quantitySold;
     }
 }

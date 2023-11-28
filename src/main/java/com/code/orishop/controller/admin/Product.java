@@ -50,7 +50,7 @@ public class Product {
         model.addAttribute("categoryList", categoryService.getAll());
         model.addAttribute("brandList", brandService.getAll());
         try {
-            model.addAttribute("product",new ProductRes(productService.getProductById(id)));
+            model.addAttribute("product",new ProductRes(productService.getProductById(id),0L));
             isExits = true;
         }catch (Exception e){
             e.printStackTrace();

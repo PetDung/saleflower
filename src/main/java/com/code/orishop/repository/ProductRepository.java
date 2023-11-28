@@ -33,4 +33,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
 
     @Query("SELECT p FROM ProductEntity p WHERE p.name like %:name%")
     List<ProductEntity> searchAllByName(@Param("name") String name);
+
+    @Query(" SELECT SUM(od.quantity) FROM OrderDetailEntity od WHERE od.product.id = :id ")
+    Long getQuantitySold (@Param("id") Long id);
 }
