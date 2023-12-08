@@ -36,7 +36,7 @@ public class Login {
             session.setAttribute("login",user);
             System.out.println(user.getRoles().get(0).getRoleName());
             if(url == null || url.contains("login")) url="/admin";
-            return "redirect:" + url;
+            return "redirect:/";
         }
         return "redirect:/login?error=true";
     }

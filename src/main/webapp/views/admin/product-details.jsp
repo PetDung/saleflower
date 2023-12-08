@@ -42,6 +42,12 @@
                         </c:forEach>
                     </select>
                 </div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <textarea  class="form-control" placeholder="Leave a comment here" id="description" style="height: 100px">${product.description}</textarea>
+                        <label for="description">Description</label>
+                    </div>
+                </div>
 
             </div>
             <div class="col-12 col-md-6">

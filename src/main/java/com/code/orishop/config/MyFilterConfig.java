@@ -11,7 +11,7 @@ public class MyFilterConfig {
     public FilterRegistrationBean<MyCustomFilter> myCustomFilter() {
         FilterRegistrationBean<MyCustomFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new MyCustomFilter());
-        registrationBean.addUrlPatterns("/admin/*");
+        registrationBean.addUrlPatterns("/admin/*","/user/*");
         return registrationBean;
     }
 }

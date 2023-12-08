@@ -15,4 +15,6 @@ public interface OrderRepository  extends JpaRepository<OrderEntity,Long> {
             "WHERE YEAR(o.createdAt) = :year AND MONTH(o.createdAt) = :month " +
             "GROUP BY MONTH(o.createdAt)")
     Data getRevenueByMonth(@Param("year") int year, @Param("month") int month);
+
+    OrderEntity findByCustomer_IdAndStatus(Long id,int status);
 }

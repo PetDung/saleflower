@@ -6,6 +6,7 @@ import com.code.orishop.model.request.UserReq;
 import com.code.orishop.repository.OrderRepository;
 import com.code.orishop.repository.RoleRepository;
 import com.code.orishop.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -107,5 +108,9 @@ public class UserService {
         });
         user.getOrders().clear();
         userRepository.delete(user);
+    }
+
+    public UserEntity getLogin(HttpSession session){
+        return (UserEntity) session.getAttribute("login");
     }
 }

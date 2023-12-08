@@ -15,7 +15,7 @@ public class Admin {
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("page","home.jsp");
-        model.addAttribute("top5",productService.top5());
+        model.addAttribute("top5",productService.top(5));
         return "/admin/index";
     }
 }

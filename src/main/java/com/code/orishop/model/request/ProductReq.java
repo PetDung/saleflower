@@ -17,6 +17,7 @@ public class ProductReq {
     private double price;
     private Integer quantityInStock;
     private Long category;
+    private String description;
     private Long brand;
     private MultipartFile image = null;
 }

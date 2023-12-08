@@ -40,6 +40,26 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="<c:url value = '/lib/easing/easing.min.js'/> "></script>
     <script src="<c:url value = '/lib/owlcarousel/owl.carousel.min.js'/> "></script>
+    <script>
+        function formatCurrency(number) {
+            return extractNumberFromString(String(number)).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
+        let prices = document.querySelectorAll('.price');
+        prices.forEach(item=>{
+            let price = Number(item.innerText);
+            item.innerText = formatCurrency(price);
+        })
+        function extractNumberFromString(inputString) {
+            // Sử dụng biểu thức chính quy để loại bỏ dấu chấm và kí tự "đ"
+            const cleanedString = inputString.replace(/[.,đ]/g, '');
+
+            // Chuyển chuỗi thành số
+            const number = parseFloat(cleanedString);
+
+            return number;
+        }
+
+    </script>
 
     <!-- Template Javascript -->
     <script src="<c:url value = '/js/main.js'/> "></script>

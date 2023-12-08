@@ -13,9 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-@Component
-public class MyCustomFilter implements Filter {
 
+public class MyCustomFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -23,22 +22,43 @@ public class MyCustomFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         HttpSession session = httpRequest.getSession();
-        UserEntity userLogin =(UserEntity) session.getAttribute("login");
+        UserEntity userLogin = (UserEntity) session.getAttribute("login");
 
         String queryString = httpRequest.getQueryString();
         String requestUrl = httpRequest.getRequestURL().toString();
         session.setAttribute("prevUrl", requestUrl);
-        if(queryString != null) requestUrl +=queryString;
+        if (queryString != null) requestUrl += queryString;
 
         if (userLogin != null) {
-            String role= userLogin.getRoles().get(0).getRoleName();
-            if(role.equalsIgnoreCase("CUSTOMER")) httpResponse.sendRedirect("/403");
+            if (userLogin.getRoles() != null) {
+                String role = userLogin.getRoles().get(0).getRoleName();
+
+                if (role != null) {
+                    String determinedRole = determineRole(httpRequest);
+
+                    if (!role.equalsIgnoreCase(determinedRole)) {
+                        httpResponse.sendRedirect("/403");
+                        return;
+                    }
+                }
+            }
             chain.doFilter(request, response);
             return;
         }
-
         httpResponse.sendRedirect("/login");
-        chain.doFilter(request, response);
     }
 
+    private String determineRole(HttpServletRequest request) {
+        String contextPath = request.getContextPath();
+        String requestURI = request.getRequestURI();
+
+        String relativePath = requestURI.substring(contextPath.length());
+
+        if (relativePath.startsWith("/admin")) {
+            return "ADMIN";
+        } else if (relativePath.startsWith("/user")) {
+            return "CUSTOMER";
+        }
+        return null; // Trả về null nếu không có vai trò mới
+    }
 }

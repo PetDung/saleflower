@@ -28,8 +28,9 @@ public class ProductRes {
     private String image;
     private Date updatedAt;
     private Date createdAt;
+    private String description;
 
-    private Long quantitySold;
+    private Long quantitySold = 0L;
 
     public ProductRes(ProductEntity p,Long quantitySold) {
         this.id = p.getId();
@@ -40,6 +41,7 @@ public class ProductRes {
         this.brandName =p.getBrand().getName();
         this.categoryId = p.getCategory().getId();
         this.categoryName = p.getCategory().getName();
+        this.description = p.getDescription();
         if( p.getImage() != null ){
             this.image = "/api/v1/image/file/product/"+ p.getImage().getId();
         }else {
@@ -48,5 +50,23 @@ public class ProductRes {
         this.updatedAt = p.getUpdatedAt();
         this.createdAt = p.getCreatedAt();
         this.quantitySold =quantitySold;
+    }
+    public ProductRes(ProductEntity p) {
+        this.id = p.getId();
+        this.name = p.getName();
+        this.price = p.getPrice();
+        this.quantityInStock = p.getQuantityInStock();
+        this.brandId = p.getBrand().getId();
+        this.brandName =p.getBrand().getName();
+        this.categoryId = p.getCategory().getId();
+        this.categoryName = p.getCategory().getName();
+        this.description = p.getDescription();
+        if( p.getImage() != null ){
+            this.image = "/api/v1/image/file/product/"+ p.getImage().getId();
+        }else {
+            this.image ="/img/nothing.png";
+        }
+        this.updatedAt = p.getUpdatedAt();
+        this.createdAt = p.getCreatedAt();
     }
 }

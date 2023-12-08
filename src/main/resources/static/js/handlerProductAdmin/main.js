@@ -35,8 +35,16 @@ let validateAndGetForm =()=>{
     let category = document.getElementById("category");
     let brand = document.getElementById("brand");
     let image = document.getElementById("inputImage");
+    let description = document.getElementById("description");
 
     let isValid = true;
+    if(!description.value){
+        description.style.border = '2px solid red';
+        isValid = false;
+    }
+    description.onclick =()=> {
+        description.style.border = '1px solid #ced4da';
+    }
 
     inputs.forEach(item =>{
         if(!item.value || item.value < 0) {
@@ -75,6 +83,7 @@ let validateAndGetForm =()=>{
     formData.append("quantityInStock", quantityInStock.value);
     formData.append("category", category.value);
     formData.append("brand", brand.value);
+    formData.append("description", description.value);
     if(image.files[0]) {
         formData.append("image", image.files[0]);
     }

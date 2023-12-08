@@ -17,6 +17,7 @@ public class ProductAdminRest {
     @PostMapping("/create-product")
     public ResponseEntity<?> postProduct(@ModelAttribute ProductReq productReq){
         try {
+            System.out.println(productReq.getDescription());
             return ResponseEntity.ok(productService.createProduct(productReq));
         }catch (Exception e){
             e.printStackTrace();

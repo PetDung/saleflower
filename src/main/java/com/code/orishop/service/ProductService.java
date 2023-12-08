@@ -11,6 +11,8 @@ import com.code.orishop.repository.CategoryRepository;
 import com.code.orishop.repository.ImageRepository;
 import com.code.orishop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,6 +45,11 @@ public class ProductService {
             }
         });
         return productResList;
+    }
+
+    public Page<ProductEntity> getProductResListByPage(int page, int  size){
+        PageRequest pageable = PageRequest.of(page, size);
+        return  productRepository.findAllByPage(pageable);
     }
     public List<ProductRes> getAllHidden(){
         List<ProductEntity> productEntities = productRepository.findAll();
@@ -81,6 +88,7 @@ public class ProductService {
                 .quantityInStock(productReq.getQuantityInStock())
                 .brand(brandRepository.findById(productReq.getBrand()).get())
                 .status(true)
+                .description(productReq.getDescription())
                 .category(categoryRepository.findById(productReq.getCategory()).get())
                 .build();
         if(productReq.getImage() != null){
@@ -106,6 +114,7 @@ public class ProductService {
         productSys.setName(product.getName());
         productSys.setPrice(product.getPrice());
         productSys.setQuantityInStock(product.getQuantityInStock());
+        productSys.setDescription(product.getDescription());
         productSys.setBrand(brandRepository.findById(product.getBrand()).get());
         productSys.setCategory(categoryRepository.findById(product.getCategory()).get());
 
@@ -139,8 +148,15 @@ public class ProductService {
         return productResList;
     }
 
-    public List<ProductHot> top5(){
-        return productRepository.findTop5SellingProducts();
+    public List<ProductHot> top(int top){
+        return productRepository.findTopSellingProducts(top);
+    }
+    public List<ProductEntity> topTrend(int top){
+        return productRepository.findTopTrendProducts(top);
+    }
+
+    public List<ProductEntity> sortCreate(){
+        return productRepository.sortByCreated();
     }
 
     public List<ProductRes> search(String name){
@@ -149,6 +165,14 @@ public class ProductService {
         productEntities.forEach(productEntity -> {
             productResList.add(new ProductRes(productEntity,0L));
 
+        });
+        return productResList;
+    }
+
+    public List<ProductRes> convert (List<ProductEntity> productEntities){
+        List<ProductRes> productResList = new ArrayList<>();
+        productEntities.forEach(productEntity -> {
+            productResList.add(new ProductRes(productEntity));
         });
         return productResList;
     }
